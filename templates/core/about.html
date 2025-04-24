@@ -1,0 +1,165 @@
+{% extends 'base.html' %}
+
+{% block title %}About Me - Aqib Shah{% endblock %}
+
+{% block content %}
+<section class="page-header">
+    <div class="container">
+        <h1>About Me</h1>
+        <div class="breadcrumb">
+            <a href="{% url 'home' %}">Home</a> / <span>About</span>
+        </div>
+    </div>
+</section>
+
+<section class="about-detail">
+    <div class="container">
+        <div class="about-content">
+            <div class="about-image">
+                <img src="/static/img/about.jpg" alt="Aqib Shah">
+            </div>
+            <div class="about-text">
+                <h2>Aqib Shah</h2>
+                <h3>Backend Developer</h3>
+                <p>I am a passionate backend developer with expertise in Python, Django, and SQL databases. With a strong foundation in software development principles, I create efficient, scalable, and maintainable web applications.</p>
+                <p>Throughout my career, I have worked on various projects ranging from small business websites to complex enterprise applications. My approach to development is focused on writing clean, efficient code that is easy to maintain and scale.</p>
+                <p>I am constantly learning and exploring new technologies to enhance my skills and stay updated with the latest industry trends.</p>
+                <div class="personal-info">
+                    <div class="info-item">
+                        <span class="info-title">Name:</span>
+                        <span class="info-value">Aqib Shah</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-title">Email:</span>
+                        <span class="info-value">csaqibshah@gmail.com</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-title">Phone:</span>
+                        <span class="info-value">+923057068821</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-title">Location:</span>
+                        <span class="info-value">Pakistan</span>
+                    </div>
+                </div>
+                <div class="about-buttons">
+                    <a href="{{ MEDIA_URL }}projects/aqib_backend_developer.pdf" class="btn btn-primary" download>Download CV</a>
+                    <a href="{% url 'contact' %}" class="btn btn-secondary">Contact Me</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="skills-section">
+    <div class="container">
+        <div class="section-header">
+            <h2>My Skills</h2>
+            <div class="underline"></div>
+        </div>
+        <div class="skills-container">
+            <div class="skills-grid">
+                {% for skill in skills %}
+                <div class="skill-card">
+                    <div class="skill-icon">
+                        <i class="{{ skill.icon }}"></i>
+                    </div>
+                    <h3>{{ skill.name }}</h3>
+                    <div class="skill-bar">
+                        <div class="skill-progress" style="width: {{ skill.proficiency }}%"></div>
+                    </div>
+                    <span class="skill-percentage">{{ skill.proficiency }}%</span>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="experience-education">
+    <div class="container">
+        <div class="section-header">
+            <h2>Experience & Education</h2>
+            <div class="underline"></div>
+        </div>
+        <div class="tabs">
+            <div class="tab-header">
+                <div class="tab-btn active" data-tab="experience">Experience</div>
+                <div class="tab-btn" data-tab="education">Education</div>
+            </div>
+            <div class="tab-content">
+                <div class="tab-pane active" id="experience">
+                    <div class="timeline">
+                        {% for experience in experiences %}
+                        <div class="timeline-item">
+                            <div class="timeline-dot"></div>
+                            <div class="timeline-content">
+                                <h3>{{ experience.position }}</h3>
+                                <h4>{{ experience.company }}</h4>
+                                <p class="timeline-date">
+                                    {{ experience.start_date|date:"M Y" }} - 
+                                    {% if experience.current %}
+                                        Present
+                                    {% else %}
+                                        {{ experience.end_date|date:"M Y" }}
+                                    {% endif %}
+                                </p>
+                                <p>{{ experience.description }}</p>
+                            </div>
+                        </div>
+                        {% empty %}
+                        <p class="no-data">No experience data available.</p>
+                        {% endfor %}
+                    </div>
+                </div>
+                <div class="tab-pane" id="education">
+                    <div class="timeline">
+                        {% for education in educations %}
+                        <div class="timeline-item">
+                            <div class="timeline-dot"></div>
+                            <div class="timeline-content">
+                                <h3>{{ education.degree }}</h3>
+                                <h4>{{ education.institution }}</h4>
+                                <p class="timeline-date">
+                                    {{ education.start_date|date:"M Y" }} - 
+                                    {% if education.end_date %}
+                                        {{ education.end_date|date:"M Y" }}
+                                    {% else %}
+                                        Present
+                                    {% endif %}
+                                </p>
+                                <p>{{ education.description }}</p>
+                            </div>
+                        </div>
+                        {% empty %}
+                        <p class="no-data">No education data available.</p>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const tabBtns = document.querySelectorAll('.tab-btn');
+        const tabPanes = document.querySelectorAll('.tab-pane');
+        
+        tabBtns.forEach(btn => {
+            btn.addEventListener('click', function() {
+                const tabId = this.getAttribute('data-tab');
+                
+                tabBtns.forEach(btn => btn.classList.remove('active'));
+                tabPanes.forEach(pane => pane.classList.remove('active'));
+                
+                this.classList.add('active');
+                document.getElementById(tabId).classList.add('active');
+            });
+        });
+    });
+</script>
+{% endblock %}
+

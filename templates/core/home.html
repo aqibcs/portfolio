@@ -1,0 +1,203 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<section class="hero">
+    <div class="container">
+        <div class="hero-content">
+            <h1>Hi, I'm <span class="highlight">Aqib Shah</span></h1>
+            <h2>Backend Developer</h2>
+            <p>Specializing in Python, Django, and SQL databases</p>
+            <div class="hero-buttons">
+                <a href="{% url 'contact' %}" class="btn btn-secondary">Contact Me</a>
+            </div>
+        </div>
+        <div class="hero-image">
+            <img src="/static/img/profile.png" alt="Aqib Shah">
+        </div>
+    </div>
+</section>
+
+<section class="about-section">
+    <div class="container">
+        <div class="section-header">
+            <h2>About Me</h2>
+            <div class="underline"></div>
+        </div>
+        <div class="about-content">
+            <div class="about-text">
+                <p>I am a passionate backend developer with expertise in Python, Django, and SQL databases. With a strong foundation in software development principles, I create efficient, scalable, and maintainable web applications.</p>
+                <p>My goal is to deliver high-quality solutions that meet client requirements and provide exceptional user experiences.</p>
+                <a href="{% url 'about' %}" class="btn btn-outline">Learn More</a>
+            </div>
+            <div class="skills">
+                <h3>Technical Skills</h3>
+                <div class="skill-bars">
+                    {% for skill in skills %}
+                    <div class="skill">
+                        <div class="skill-info">
+                            <span class="skill-name">{{ skill.name }}</span>
+                            <span class="skill-percentage">{{ skill.proficiency }}%</span>
+                        </div>
+                        <div class="skill-bar">
+                            <div class="skill-progress" style="width: {{ skill.proficiency }}%"></div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="projects-section">
+    <div class="container">
+        <div class="section-header">
+            <h2>Featured Projects</h2>
+            <div class="underline"></div>
+        </div>
+        <div class="projects-grid">
+            {% for project in projects %}
+            <div class="project-card">
+                <div class="project-image">
+                    <img src="{{ project.image.url }}" alt="{{ project.title }}">
+                </div>
+                <div class="project-info">
+                    <h3>{{ project.title }}</h3>
+                    <p>{{ project.description|truncatewords:20 }}</p>
+                    <div class="project-tech">
+                        {% for tech in project.technologies.all %}
+                        <span class="tech-tag">{{ tech.name }}</span>
+                        {% endfor %}
+                    </div>
+                    <div class="project-links">
+                        <a href="{% url 'project_detail' project.slug %}" class="btn btn-sm">View Details</a>
+                        {% if project.github_url %}
+                        <a href="{{ project.github_url }}" target="_blank" class="btn btn-sm btn-outline"><i class="fab fa-github"></i> GitHub</a>
+                        {% endif %}
+                        {% if project.live_url %}
+                        <a href="{{ project.live_url }}" target="_blank" class="btn btn-sm btn-outline"><i class="fas fa-external-link-alt"></i> Live</a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            {% empty %}
+            <p class="no-projects">No featured projects available yet.</p>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<section class="experience-section">
+    <div class="container">
+        <div class="section-header">
+            <h2>Experience & Education</h2>
+            <div class="underline"></div>
+        </div>
+        <div class="timeline-container">
+            <div class="timeline">
+                {% for experience in experiences %}
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-content">
+                        <h3>{{ experience.position }}</h3>
+                        <h4>{{ experience.company }}</h4>
+                        <p class="timeline-date">
+                            {{ experience.start_date|date:"M Y" }} - 
+                            {% if experience.current %}
+                                Present
+                            {% else %}
+                                {{ experience.end_date|date:"M Y" }}
+                            {% endif %}
+                        </p>
+                        <p>{{ experience.description }}</p>
+                    </div>
+                </div>
+                {% endfor %}
+                
+                {% for education in educations %}
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-content">
+                        <h3>{{ education.degree }}</h3>
+                        <h4>{{ education.institution }}</h4>
+                        <p class="timeline-date">
+                            {{ education.start_date|date:"M Y" }} - 
+                            {% if education.end_date %}
+                                {{ education.end_date|date:"M Y" }}
+                            {% else %}
+                                
+                            {% endif %}
+                        </p>
+                        <p>{{ education.description }}</p>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="contact-section">
+    <div class="container">
+        <div class="section-header">
+            <h2>Get In Touch</h2>
+            <div class="underline"></div>
+        </div>
+        <div class="contact-container">
+            <div class="contact-info">
+                <div class="contact-item">
+                    <div class="contact-icon">
+                        <i class="fas fa-envelope"></i>
+                    </div>
+                    <div class="contact-text">
+                        <h3>Email</h3>
+                        <p>csaqibshah@gmail.com</p>
+                    </div>
+                </div>
+                <div class="contact-item">
+                    <div class="contact-icon">
+                        <i class="fas fa-phone"></i>
+                    </div>
+                    <div class="contact-text">
+                        <h3>Phone</h3>
+                        <p>+923057068821</p>
+                    </div>
+                </div>
+                <div class="contact-item">
+                    <div class="contact-icon">
+                        <i class="fas fa-map-marker-alt"></i>
+                    </div>
+                    <div class="contact-text">
+                        <h3>Location</h3>
+                        <p>Pakistan</p>
+                    </div>
+                </div>
+                <div class="social-links">
+                    <a href="https://github.com/aqibcs/" target="_blank"><i class="fab fa-github"></i></a>
+                    <a href="https://www.linkedin.com/in/aqibcs/" target="_blank"><i class="fab fa-linkedin"></i></a>
+                    <a href="#" target="_blank"><i class="fab fa-twitter"></i></a>
+                </div>
+            </div>
+            <div class="contact-form">
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        {{ form.name }}
+                    </div>
+                    <div class="form-group">
+                        {{ form.email }}
+                    </div>
+                    <div class="form-group">
+                        {{ form.subject }}
+                    </div>
+                    <div class="form-group">
+                        {{ form.message }}
+                    </div>
+                    <button type="submit" class="btn btn-primary">Send Message</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
