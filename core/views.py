@@ -2,6 +2,8 @@ import os
 from dotenv import load_dotenv
 
 from django.shortcuts import render, redirect
+
+from projects.models import Project
 from .forms import ContactForm
 from .models import Skill, Experience, Education
 from django.contrib import messages
@@ -14,6 +16,8 @@ def home(request):
     skills = Skill.objects.all()
     experiences = Experience.objects.all()
     educations = Education.objects.all()
+    projects = Project.objects.filter(featured=True)[:3]
+
 
     if request.method == 'POST':
         form = ContactForm(request.POST)
@@ -28,6 +32,7 @@ def home(request):
         'skills': skills,
         'experiences': experiences,
         'educations': educations,
+        'projects': projects,
         'form': form,
     }
     return render(request, 'core/home.html', context)
