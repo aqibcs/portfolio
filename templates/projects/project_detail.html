@@ -1,0 +1,89 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ project.title }} - Aqib Shah{% endblock %}
+
+{% block content %}
+<section class="page-header">
+    <div class="container">
+        <h1>{{ project.title }}</h1>
+        <div class="breadcrumb">
+            <a href="{% url 'home' %}">Home</a> / <a href="{% url 'project_list' %}">Projects</a> / <span>{{ project.title }}</span>
+        </div>
+    </div>
+</section>
+
+<section class="project-detail">
+    <div class="container">
+        <div class="project-showcase">
+            <div class="project-image">
+                <img src="{{ project.image.url }}" alt="{{ project.title }}">
+            </div>
+            <div class="project-info">
+                <h2>{{ project.title }}</h2>
+                <div class="project-meta">
+                    <div class="meta-item">
+                        <span class="meta-label">Category:</span>
+                        <span class="meta-value">{{ project.category.name }}</span>
+                    </div>
+                    <div class="meta-item">
+                        <span class="meta-label">Date:</span>
+                        <span class="meta-value">{{ project.created_at|date:"F j, Y" }}</span>
+                    </div>
+                </div>
+                <div class="project-tech">
+                    <h3>Technologies Used:</h3>
+                    <div class="tech-tags">
+                        {% for tech in project.technologies.all %}
+                        <span class="tech-tag">{{ tech.name }}</span>
+                        {% endfor %}
+                    </div>
+                </div>
+                <div class="project-links">
+                    {% if project.github_url %}
+                    <a href="{{ project.github_url }}" target="_blank" class="btn btn-outline">
+                        <i class="fab fa-github"></i> GitHub Repository
+                    </a>
+                    {% endif %}
+                    {% if project.live_url %}
+                    <a href="{{ project.live_url }}" target="_blank" class="btn btn-primary">
+                        <i class="fas fa-external-link-alt"></i> Live Demo
+                    </a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        
+        <div class="project-description">
+            <h3>Project Description</h3>
+            <div class="description-content">
+                {{ project.description|linebreaks }}
+            </div>
+        </div>
+        
+        <div class="related-projects">
+            <h3>Related Projects</h3>
+            <div class="projects-grid">
+                {% for related in related_projects %}
+                <div class="project-card">
+                    <div class="project-image">
+                        <img src="{{ related.image.url }}" alt="{{ related.title }}">
+                        <div class="project-overlay">
+                            <a href="{% url 'project_detail' related.slug %}" class="project-link">
+                                <i class="fas fa-eye"></i>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="project-info">
+                        <h3>{{ related.title }}</h3>
+                        <p>{{ related.description|truncatewords:10 }}</p>
+                    </div>
+                </div>
+                {% empty %}
+                <p class="no-projects">No related projects available.</p>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
